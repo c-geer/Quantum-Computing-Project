@@ -1,17 +1,46 @@
 import numpy as np
 
 class Tensor(object):
-    """ Hello this is my sexy tensor class where you can add and tensor product two tensors x"""
+    """
+    Class to represent a tensor
+    """
     def __init__(self, data):
+        """Constructor for the Tensor class
+
+        Args:
+            data (list): List of lists representing the tensor
+        """
+        #Convert the data to a numpy array
         self.data = np.atleast_2d(np.array(data))
 
     def __add__(self, other):
+        """Add two tensors together
+
+        Args:
+            other (Tensor): Another tensor
+
+        Returns:
+            Tensor: Sum of the two tensors
+        """
         return Tensor(self.data + other.data)
     
     def __repr__(self):
+        """Return the string representation of the tensor
+
+        Returns:
+            str: String representation of the tensor
+        """
         return f"{self.data}"
     
     def TensorProduct(self, other):
+        """Compute the tensor product of two tensors
+
+        Args:
+            other (Tensor): Another tensor
+
+        Returns:
+            Tensor: Tensor product of the two tensors
+        """
         shape = (self.data.shape[0] * other.data.shape[0], self.data.shape[1] * other.data.shape[1])
         data = np.zeros(shape)
         for i in range(self.data.shape[0]):
@@ -38,4 +67,4 @@ should return:
  [15. 18. 20. 24.]
  [21. 24. 28. 32.]]
 
- '''
+'''
