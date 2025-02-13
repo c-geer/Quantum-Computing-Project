@@ -25,3 +25,36 @@ class Q_Register(object):
             # If initial_state is an integer, treat it as a basis state index
             self.state = np.zeros(self.size, dtype=complex)
             self.state[initial_state] = 1.0
+
+
+    def normalise(self):
+        """
+        Method to normalise the state of the quantum register
+        -------
+        state --> normalised state
+        """
+        mag = np.linalg.norm(self.state)
+        self.state /= mag
+
+
+    def initial_H(self):
+        """
+        Method to perform the initial Hadamard transform at the beginning of Grover's algorithm 
+        to put the quantum register into the equal superposition of all N states
+        -------
+        state --> equal superposition of all states
+        """
+        self.state = np.ones(self.size)
+        self.normalise()
+
+
+    def __str__(self):
+        """
+        Define print of Q_Register class to display current state
+        """
+        return str(self.state)
+
+
+#test_Q = Q_Register(3, 0)
+#test_Q.initial_H()
+#print(test_Q)
