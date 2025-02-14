@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.linalg import hadamard
+import random
 
 class Q_Register(object):
     """
@@ -69,13 +70,13 @@ class Q_Register(object):
 
         return index
     
-
+"""
     def apply_H(self, H):
         
         big_H = H
 
         for i in range(self.N):
-
+"""
 
 
 #test_Q = Q_Register(3, 6)
