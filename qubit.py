@@ -26,8 +26,8 @@ class Qubit(object):
         one: 1 state
         state: qubit state in vector form
         """
-        self.zero = np.array([1, 0])
-        self.one = np.array([0, 1])
+        self.zero = np.array([1, 0], dtype=complex)
+        self.one = np.array([0, 1], dtype = complex)
         
         self.state = alpha * self.zero + beta * self.one
         self.normalise() # normalise the input state
@@ -56,14 +56,13 @@ class Qubit(object):
         return index
         
         
-        def apply_gate(self, gate):
-            """
-            apply a gate to a single qubit
-            -------
-            Inputs
-            -------
-            gate: gate to be applied
-            """
-            
+    def apply_gate(self, gate):
+        """
+        apply a gate to a single qubit
+        -------
+        Inputs
+        -------
+        gate: gate to be applied
+        """
 	    # gate is an object of the gate class, eg. Hadamard gate
-            self.state = gate.apply(self.state, 1)
+        self.state = gate.apply(self.state, 1)

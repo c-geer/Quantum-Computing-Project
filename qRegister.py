@@ -1,11 +1,10 @@
 import numpy as np
-import random
+from scipy.linalg import hadamard
 
 class Q_Register(object):
     """
     The quantum register class stores a collection of qbits as a big vector
     """
-
     def __init__(self, N, initial_state):
         """
         Constructor
@@ -22,7 +21,7 @@ class Q_Register(object):
             # Initialize to the |0...0> state if no initial state is provided
             self.state = np.zeros(self.size, dtype=complex)
             self.state[0] = 1.0
-            
+
         elif isinstance(initial_state, int):
             # If initial_state is an integer, treat it as a basis state index
             self.state = np.zeros(self.size, dtype=complex)
@@ -69,6 +68,14 @@ class Q_Register(object):
         index = random.choices(range(len(probs)), probs)[0]
 
         return index
+    
+
+    def apply_H(self, H):
+        
+        big_H = H
+
+        for i in range(self.N):
+
 
 
 #test_Q = Q_Register(3, 6)
