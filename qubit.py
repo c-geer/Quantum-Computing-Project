@@ -26,7 +26,6 @@ class Qubit(object):
         one: 1 state
         state: qubit state in vector form
         """
-        
         self.zero = np.array([1, 0])
         self.one = np.array([0, 1])
         
@@ -49,16 +48,12 @@ class Qubit(object):
         -------
         Returns
         -------
-        0 state or 1 state: numpy array
+        0 or 1: integer
         """
-        
-        r = random.random() # generate number between 0.0 and 1.0
-        prob_a = self.state[0]**2 # calculate probability of measuring 0
-        
-        if r < prob_a:
-            return self.zero
-        else:
-            return self.one
+        probs = self.state**2
+        index = random.choices(range(len(probs)), probs)[0]
+
+        return index
         
         
         def apply_gate(self, gate):

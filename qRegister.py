@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 class Q_Register(object):
     """
@@ -21,6 +22,7 @@ class Q_Register(object):
             # Initialize to the |0...0> state if no initial state is provided
             self.state = np.zeros(self.size, dtype=complex)
             self.state[0] = 1.0
+            
         elif isinstance(initial_state, int):
             # If initial_state is an integer, treat it as a basis state index
             self.state = np.zeros(self.size, dtype=complex)
@@ -55,6 +57,19 @@ class Q_Register(object):
         return str(self.state)
 
 
-#test_Q = Q_Register(3, 0)
-#test_Q.initial_H()
-#print(test_Q)
+    def measure(self):
+        """
+        measure quantum register state
+        -------
+        Returns
+        -------
+        state from 0 to N-1: integer
+        """
+        probs = np.abs(self.state)**2
+        index = random.choices(range(len(probs)), probs)[0]
+
+        return index
+
+
+#test_Q = Q_Register(3, 6)
+#print(test_Q.measure())
