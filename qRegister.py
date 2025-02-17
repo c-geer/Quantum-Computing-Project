@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.linalg import hadamard
 import random
 
 class Q_Register(object):
