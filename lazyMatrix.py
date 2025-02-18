@@ -76,7 +76,7 @@ class Lazy_Matrix(object):
             but I'm not sure if it's worth it with lazy_G being a generator object and all.
             """
             row, col = divmod(i, n)
-            result_Q[row] += value * Q[col]
+            result_Q[row] += value * Q.state[col]
 
         Q.state = result_Q
         Q.normalise() # ensure quantum register is normalised regardless of whether we've bothered with prefactors when constructing our gates
