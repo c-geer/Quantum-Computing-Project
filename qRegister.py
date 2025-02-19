@@ -14,7 +14,7 @@ class Q_Register(object):
         N: Integer, Number of qubits
         initial_state: Integer, the initial state of the system, like |0> or |7> or |8123>
         """
-        self.N = N
+        self.N = N # assertion unnecessary, size is computed automatically from #qubits
         self.size = 2 ** N # Determine the size of the state vector
 
         if initial_state is None:
@@ -69,13 +69,6 @@ class Q_Register(object):
 
         return index
     
-"""
-    def apply_H(self, H):
-        
-        big_H = H
-
-        for i in range(self.N):
-"""
 
 
 #test_Q = Q_Register(3, 6)

@@ -8,6 +8,7 @@ class Lazy_Matrix(object):
     -------
     lazy_gate: obtains each element of some lazy matrix subclass gate
     apply: applies the lazy gate to a quantum register
+    element: yields elements of the identity matrix
     """
 
     def __init__(self, n):
@@ -16,8 +17,11 @@ class Lazy_Matrix(object):
         -------
         Inputs
         -------
-        n: integer, dimension of desired matrix. MUST be determined from the quantum register that the gate is being applied to!!!
+        n: integer, dimension of desired matrix. 
+        ->MUST be determined from the quantum register that the gate is being applied to!!!
+        ->Note: n is the size of the quantum register, 2**N
         """
+        assert n > 0 and bin(n).count('1') == 1 # check n corresponds to the size of the quantum register
         self.n = n
 
     
@@ -63,10 +67,12 @@ class Lazy_Matrix(object):
         -------
         Q: object, the quantum register we want to apply the gate to
         -------
+        Actions
+        -------
         transforms the state of the quantum register through the gate
         """ 
         lazy_G = self.lazy_gate() # each element of the lazy matrix
-        result_Q = np.zeros(self.n, dtype=complex) # variable to hold the state of the transformed quantum register
+        new_state = np.zeros(self.n, dtype=complex) # variable to hold the state of the transformed quantum register
 
         for i, value in enumerate(lazy_G):
             """
@@ -76,7 +82,7 @@ class Lazy_Matrix(object):
             but I'm not sure if it's worth it with lazy_G being a generator object and all.
             """
             row, col = divmod(i, n)
-            result_Q[row] += value * Q.state[col]
+            new_state[row] += value * Q.state[col]
 
-        Q.state = result_Q
+        Q.state = new_state
         Q.normalise() # ensure quantum register is normalised regardless of whether we've bothered with prefactors when constructing our gates
