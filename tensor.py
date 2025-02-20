@@ -53,9 +53,9 @@ class Tensor(object):
         return Tensor(data)
 
 #test xx
-t1 = Tensor([0, 1])
+t1 = Tensor([[1, 1], [1, -1]])
 print(t1)
-t2 = Tensor([0, 1])
+t2 = Tensor([[1, 1], [1, -1]])
 t3 = t1 + t2
 t4 = t1.TensorProduct(t2)
 print(t4)
