@@ -54,11 +54,11 @@ class Tensor(object):
 
 #test xx
 t1 = Tensor([[1, 1], [1, -1]])
-print(t1)
+
 t2 = Tensor([[1, 1], [1, -1]])
 t3 = t1 + t2
 t4 = t1.TensorProduct(t2)
-print(t4)
+
 #tensor product between 1
 #                       2
 #and
@@ -66,7 +66,6 @@ print(t4)
 #6
 t5 = Tensor([[1, 2]])
 t6 = Tensor([[5], [6]])
-t7
 '''
 Tensor product between 
 [1 2]   and [5 6]
