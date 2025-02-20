@@ -8,7 +8,10 @@ class Tensor(object):
         """Constructor for the Tensor class
 
         Args:
-            data (list): List of lists representing the tensor
+            data (list): List representing the tensor, takes the form of a 2D list, i.e.
+            [[1, 2], [3, 4], [5, 6]] for a 3x2 tensor
+            [1,2] for a 1x2 tensor (column vector)
+            
         """
         #Convert the data to a numpy array
         self.data = np.atleast_2d(np.array(data))
@@ -50,12 +53,20 @@ class Tensor(object):
         return Tensor(data)
 
 #test xx
-t1 = Tensor([[1, 2], [3, 4]])
+t1 = Tensor([0, 1])
 print(t1)
-t2 = Tensor([[5, 6], [7, 8]])
+t2 = Tensor([0, 1])
 t3 = t1 + t2
 t4 = t1.TensorProduct(t2)
 print(t4)
+#tensor product between 1
+#                       2
+#and
+#5
+#6
+t5 = Tensor([[1, 2]])
+t6 = Tensor([[5], [6]])
+t7
 '''
 Tensor product between 
 [1 2]   and [5 6]
