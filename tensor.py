@@ -66,7 +66,7 @@ print(t4)
 #6
 t5 = Tensor([[1, 2]])
 t6 = Tensor([[5], [6]])
-t7
+
 '''
 Tensor product between 
 [1 2]   and [5 6]
