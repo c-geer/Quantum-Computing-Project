@@ -117,3 +117,54 @@ class ControlledVGate(QuantumGate):
         v = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1j]])
         super().__init__(v, qbpos)
 
+class InversePhaseGate(QuantumGate):
+     def __init__(self, qbpos):
+        """
+        Constructor for the Inverse Phase Gate class
+        """
+        inversephase = np.array([[1, 0], [0, -1j]])
+        super().__init__(inversephase, qbpos)
+
+class TGate(QuantumGate):
+    def __init__(self, qbpos):
+        """
+        Constructor for the T Gate class
+        """
+        t = np.array([[1, 0], [0, np.exp(1j*np.pi/4)]])
+        super().__init__(t, qbpos)
+
+class InverseTGate(QuantumGate):
+    def __init__(self, qbpos):
+        """
+        Constructor for the inverse T Gate class
+        """
+        tdagger = np.array([[1, 0], [0, np.exp(-1j*np.pi/4)]])
+        super().__init__(tdagger, qbpos)
+
+class PauliXGate(QuantumGate):
+    def __init__(self, qbpos):
+        """
+        Constructor for the Pauli-x Gate class
+        """
+        x = np.array([[0, 1], [1, 0]])
+        super().__init__(x, qbpos)
+
+class ToffoliGate(QuantumGate):
+    def __init__(self, qbpos):
+        """
+        Constructor for the Toffoli Gate class
+        """
+        toffoli = np.array([
+    [1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 1],
+    [0, 0, 0, 0, 0, 0, 1, 0]])
+        super().__init__(toffoli, qbpos)
+    
+
+    
+
