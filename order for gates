@@ -1,0 +1,72 @@
+from qiskit import QuantumCircuit, Aer, transpile, assemble, execute
+from qiskit.visualization import plot_histogram
+import numpy as np
+
+
+
+def oracle():
+    qc = QuantumCircuit(3)
+    
+    # Apply X gates to target |111> state
+    qc.ccx(0, 1, 2)  # Toffoli (CCNOT) to mark |111>
+    qc.sdg(2)        # Apply S† gate (inverse phase gate)
+    qc.ccx(0, 1, 2)  # Toffoli again
+    qc.s(2)          # Restore phase
+    
+    return qc
+
+
+def diffusion_operator():
+    qc = QuantumCircuit(3)
+    
+    # Apply Hadamard on all qubits
+    qc.h([0, 1, 2])
+    
+    # Apply X gates
+    qc.x([0, 1, 2])
+
+    # Multi-controlled Z using Toffoli, CNOT, and Phase gates
+    qc.h(2)  # Convert to Z basis
+    qc.ccx(0, 1, 2)  # Toffoli (CCNOT)
+    qc.tdg(2)  # Apply T† (inverse of T)
+    qc.ccx(0, 1, 2)  # Toffoli again
+    qc.t(2)  # Restore phase
+    qc.h(2)  # Convert back from Z basis
+
+    # Apply X gates again
+    qc.x([0, 1, 2])
+
+    # Apply Hadamard again
+    qc.h([0, 1, 2])
+    
+    return qc
+
+
+
+
+# Create a 3-qubit quantum circuit
+grover_circuit = QuantumCircuit(3)
+
+# Apply Hadamard to create superposition
+grover_circuit.h([0, 1, 2])
+
+# Apply Oracle
+grover_circuit.compose(oracle(), inplace=True)
+
+# Apply Diffusion Operator
+grover_circuit.compose(diffusion_operator(), inplace=True)
+
+
+
+
+
+# Measure all qubits
+grover_circuit.measure_all()
+simulator = Aer.get_backend('qasm_simulator')
+compiled_circuit = transpile(grover_circuit, simulator)
+qobj = assemble(compiled_circuit)
+result = execute(compiled_circuit, simulator).result()
+counts = result.get_counts()
+
+# Display result
+plot_histogram(counts)
