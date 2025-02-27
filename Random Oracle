@@ -1,0 +1,16 @@
+#trying to make an Oracle that picks a random value so we "can't see it working"
+
+import numpy as np
+from sparsematrix import SparseMatrix
+
+def Random_Oracle(n):
+  size = 2**n
+  Mark = np.random.choice(size)
+  oracle = SparseMatrix(self.size, self.size)
+
+  # Set diagonal elements to 1, except for the marked state
+  for i in range(self.size):
+      oracle[i, i] = 1
+  oracle[Mark,Mark] = -1
+
+return oracle , Mark
