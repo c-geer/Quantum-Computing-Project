@@ -54,7 +54,7 @@ class QuantumGate(object):
             w (array): output quantum state vector
         """
         v = np.array(v)  
-        w = np.zeros_like(v)  
+        w = np.zeros_like(v, dtype=np.complex128)  
 
         for i in range(len(v)):
             r = self.gather(i)  
@@ -82,72 +82,172 @@ class HadamardGate(QuantumGate):
     """
     Hadamard gate class for a 3-qubit system
     """
-    def __init__(self, qbpos):
-        h = np.array([[1, 1], [1, -1]])
-        unitmatrix2d = np.array([[1, 0], [0, 1]])
-        unittensor = Tensor(unitmatrix2d)
-        hadamard = Tensor(h)
-        
-        h1h = hadamard.TensorProduct((unittensor.TensorProduct(hadamard)))
-        h1h = np.array(h1h.data)
-        
-        super().__init__(h1h, qbpos)
+    def __init__(self, qbpos,n): #tensor product n times for however many qubits (all gates)
+        h = Tensor(np.array([[1, 1], [1, -1]]))
+        q = qbpos
+        qbpos = qbpos[0]
+        identity = Tensor(np.array([[1, 0], [0, 1]]))
+        if qbpos == 0:
+            hadamard_ = h.TensorProduct(identity)
+            for i in range(n-2):
+                hadamard_ = hadamard_.TensorProduct(identity)
+        else:
+            hadamard_ = identity
+            for i in range(n-1):
+                if i == qbpos-1:
+                    hadamard_ = hadamard_.TensorProduct(h)
+                else:
+                    hadamard_ = hadamard_.TensorProduct(identity)
+        hadamard = np.array(hadamard_.data) * (1/np.sqrt(2))**(n)
+        super().__init__(hadamard, q)
 
 class CNOT(QuantumGate):
-    def __init__(self, qbpos):
+    def __init__(self, qbpos, n):
         """
         Constructor for the CNOT Gate class
         """
-        cnot = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0]])
+        cnot = Tensor(np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0]]))
+        cnot_ = cnot
+        for i in range(n-2):
+            cnot_ = cnot_.TensorProduct(cnot)
+        cnot = np.array(cnot_.data)
+        
         super().__init__(cnot, qbpos)
 
 class PhaseGate(QuantumGate):
-    def __init__(self, qbpos):
+    def __init__(self, qbpos, n):
         """
         Constructor for the Phase Gate class
         """
-        phase = np.array([[1, 0], [0, 1j]])
-        super().__init__(phase, qbpos)
+        phase = Tensor(np.array([[1, 0], [0, 1j]]))
+        identity = Tensor(np.array([[1, 0], [0, 1]]))
+        q = qbpos
+        qbpos = qbpos[0]
+        if qbpos == 0:
+            phase_ = phase.TensorProduct(identity)
+            for i in range(n-2):
+                phase_ = phase_.TensorProduct(identity)
+        else:
+            phase_ = identity
+            for i in range(n-1):
+                if i == qbpos-1:
+                    phase_ = phase_.TensorProduct(phase)
+                else:
+                    phase_ = phase_.TensorProduct(identity)
+                    
+        phase = np.array(phase_.data)
+        super().__init__(phase, q)
 
 class ControlledVGate(QuantumGate):
-    def __init__(self, qbpos):
+    def __init__(self, qbpos, n):
         """
         Constructor for the Controlled-V Gate class
         """
-        v = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1j]])
+        v = Tensor(np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1j]]))
+        v_ = v
+        for i in range(n-2):
+            v_ = v_.TensorProduct(v)
+        v = np.array(v_.data)
         super().__init__(v, qbpos)
 
 class InversePhaseGate(QuantumGate):
-     def __init__(self, qbpos):
+    def __init__(self, qbpos, n):
         """
         Constructor for the Inverse Phase Gate class
         """
-        inversephase = np.array([[1, 0], [0, -1j]])
-        super().__init__(inversephase, qbpos)
+        q = qbpos
+        inversephase = Tensor(np.array([[1, 0], [0, -1j]]))
+        identity = Tensor(np.array([[1, 0], [0, 1]]))
+        qbpos = qbpos[0]
+        
+        if qbpos == 0:
+            inversephase_ = inversephase.TensorProduct(identity)
+            for i in range(n-2):
+                inversephase_ = inversephase_.TensorProduct(identity)
+        else:
+            inversephase_ = identity
+            for i in range(n-1):
+                if i == qbpos-1:
+                    inversephase_ = inversephase_.TensorProduct(inversephase)
+                else:
+                    inversephase_ = inversephase_.TensorProduct(identity)
+                    
+        inversephase = np.array(inversephase_.data)
+        
+        super().__init__(inversephase, q)
 
 class TGate(QuantumGate):
-    def __init__(self, qbpos):
+    def __init__(self, qbpos, n):
         """
         Constructor for the T Gate class
         """
-        t = np.array([[1, 0], [0, np.exp(1j*np.pi/4)]])
-        super().__init__(t, qbpos)
+        q = qbpos
+        t = Tensor(np.array([[1, 0], [0, np.exp(1j*np.pi/4)]]))
+        identity = Tensor(np.array([[1, 0], [0, 1]]))
+        qbpos = qbpos[0]
+        if qbpos == 0:
+            t_ = t.TensorProduct(identity)
+            for i in range(n-2):
+                t_ = t_.TensorProduct(identity)
+        else:
+            t_ = identity
+            for i in range(n-1):
+                if i == qbpos-1:
+                    t_ = t_.TensorProduct(t)
+                else:
+                    t_ = t_.TensorProduct(identity)
+                    
+        t = np.array(t_.data)
+        super().__init__(t, q)
 
 class InverseTGate(QuantumGate):
-    def __init__(self, qbpos):
+    def __init__(self, qbpos, n):
         """
         Constructor for the inverse T Gate class
         """
-        tdagger = np.array([[1, 0], [0, np.exp(-1j*np.pi/4)]])
-        super().__init__(tdagger, qbpos)
+        q = qbpos
+        qbpos = qbpos[0]
+        tdagger = Tensor(np.array([[1, 0], [0, np.exp(-1j*np.pi/4)]]))
+        identity = Tensor(np.array([[1, 0], [0, 1]]))
+        
+        if qbpos == 0:
+            tdagger_ = tdagger.TensorProduct(identity)
+            for i in range(n-2):
+                tdagger_ = tdagger_.TensorProduct(identity)
+        else:
+            tdagger_ = identity
+            for i in range(n-1):
+                if i == qbpos-1:
+                    tdagger_ = tdagger_.TensorProduct(tdagger)
+                else:
+                    tdagger_ = tdagger_.TensorProduct(identity)
+        tdagger = np.array(tdagger_.data)
+        
+        
+        super().__init__(tdagger, q)
 
 class PauliXGate(QuantumGate):
-    def __init__(self, qbpos):
+    def __init__(self, qbpos, n):
         """
         Constructor for the Pauli-x Gate class
         """
-        x = np.array([[0, 1], [1, 0]])
-        super().__init__(x, qbpos)
+        q = qbpos
+        qbpos = qbpos[0]
+        x = Tensor(np.array([[0, 1], [1, 0]]))
+        identity = Tensor(np.array([[1, 0], [0, 1]]))
+        if qbpos == 0:
+            x_ = x.TensorProduct(identity)
+            for i in range(n-2):
+                x_ = x_.TensorProduct(identity)
+        else:
+            x_ = identity
+            for i in range(n-1):
+                if i == qbpos-1:
+                    x_ = x_.TensorProduct(x)
+                else:
+                    x_ = x_.TensorProduct(identity)
+        x = np.array(x_.data)
+        super().__init__(x, q)
 
 class ToffoliGate(QuantumGate):
     def __init__(self, qbpos):
@@ -166,5 +266,17 @@ class ToffoliGate(QuantumGate):
         super().__init__(toffoli, qbpos)
     
 
-    
-
+class MCXGate(QuantumGate):
+    def __init__(self, qbpos, n):
+        """
+        Constructor for the MCX Gate class
+        """
+        mcx = np.zeros((2**n, 2**n))
+        for i in range(2**n):
+            if i == (2**n)-2:
+                mcx[i, i+1] = 1
+            elif i == (2**n)-1:
+                mcx[i, i-1] = 1
+            else:
+                mcx[i, i] = 1
+        super().__init__(mcx, qbpos)

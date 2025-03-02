@@ -14,7 +14,8 @@ class Tensor(object):
             
         """
         #Convert the data to a numpy array
-        self.data = np.atleast_2d(np.array(data))
+        self.data = np.atleast_2d(np.array(data, dtype=np.complex128))
+
 
     def __add__(self, other):
         """Add two tensors together
@@ -45,10 +46,11 @@ class Tensor(object):
             Tensor: Tensor product of the two tensors
         """
         shape = (self.data.shape[0] * other.data.shape[0], self.data.shape[1] * other.data.shape[1])
-        data = np.zeros(shape)
+        data = np.zeros(shape, dtype=np.complex128)
         for i in range(self.data.shape[0]):
             for j in range(self.data.shape[1]):
                 data[i*other.data.shape[0]:(i+1)*other.data.shape[0], j*other.data.shape[1]:(j+1)*other.data.shape[1]] = self.data[i, j] * other.data
+        data = data.astype(np.complex128)
 
         return Tensor(data)
 
