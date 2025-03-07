@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.sparse import identity
 from tensor import Tensor
 
 def x_gate(n):
@@ -29,7 +28,7 @@ def z_gate(n):
 def controlled_z(n, control, target):
     """Constructs a Controlled-Z gate for n qubits."""
     size = 2**n
-    CZ = identity(size, dtype=complex)
+    CZ = np.eye(size, dtype=complex)
     for i in range(size):
         if ((i >> control) & 1) and ((i >> target) & 1):  # Both control and target are |1⟩
             CZ[i, i] = -1
