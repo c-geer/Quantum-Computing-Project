@@ -21,6 +21,10 @@ def h_gate(n):
 def z_gate(n):
     """Pauli-Z gate."""
     Z = np.array([[1, 0], [0, -1]], dtype=complex)
+    Z_n = Z
+    for _ range(n-1):
+        Z_n = Z_n.TensorProduct(Z)
+    return Z_n
 
 def controlled_z(n, control, target):
     """Constructs a controlled-Z gate for n qubits."""
