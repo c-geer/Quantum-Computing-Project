@@ -33,3 +33,10 @@ def controlled_z(n, control, target):
         if ((i >> control) & 1) and ((i >> target) & 1):  # Both control and target are |1⟩
             CZ[i, i] = -1
     return Tensor(CZ)
+
+def controlled_x_gate(n):
+    C = Tensor(np.array([1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]))
+    C_n = C
+    for _ in range(n-1):
+        C_n = C_n.TensorProduct(C)
+    return C_n 
