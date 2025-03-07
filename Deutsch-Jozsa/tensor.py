@@ -15,6 +15,7 @@ class Tensor(object):
         """
         #Convert the data to a numpy array
         self.data = np.atleast_2d(np.array(data, dtype=np.complex128))
+        self.shape = self.data.shape
 
 
     def __add__(self, other):
@@ -36,6 +37,17 @@ class Tensor(object):
         """
         return f"{self.data}"
     
+    def __getitem__(self, key):
+        """
+        Get the value of a specific element in the matrix
+        
+        Parameters:
+        ------------
+            key: Tuple (row, col) specifying the element
+        """
+        row, col = key
+        return self.data[row, col]
+    
     def TensorProduct(self, other):
         """Compute the tensor product of two tensors
 
@@ -45,11 +57,11 @@ class Tensor(object):
         Returns:
             Tensor: Tensor product of the two tensors
         """
-        shape = (self.data.shape[0] * other.data.shape[0], self.data.shape[1] * other.data.shape[1])
+        shape = (self.shape[0] * other.shape[0], self.shape[1] * other.shape[1])
         data = np.zeros(shape, dtype=np.complex128)
-        for i in range(self.data.shape[0]):
-            for j in range(self.data.shape[1]):
-                data[i*other.data.shape[0]:(i+1)*other.data.shape[0], j*other.data.shape[1]:(j+1)*other.data.shape[1]] = self.data[i, j] * other.data
+        for i in range(self.shape[0]):
+            for j in range(self.shape[1]):
+                data[i*other.shape[0]:(i+1)*other.shape[0], j*other.shape[1]:(j+1)*other.shape[1]] = self.data[i, j] * other.data
         data = data.astype(np.complex128)
 
         return Tensor(data)
@@ -69,7 +81,7 @@ t4 = t1.TensorProduct(t2)
 t5 = Tensor([[1, 2]])
 t6 = Tensor([[5], [6]])
 
-#print("hello")
+#print(t4)
 '''
 Tensor product between 
 [1 2]   and [5 6]

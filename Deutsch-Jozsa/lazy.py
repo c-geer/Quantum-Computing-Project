@@ -1,8 +1,9 @@
 import numpy as np
 from gates import h_gate
 from gates import cz_gate
+from sparsematrix import SparseMatrix
 
-class Lazy_Circuit:
+class LazyCircuit:
     def __init__(self, qbpos):
         """Initialize with qubit positions we want to act upon."""
         self.qbpos = qbpos
@@ -44,9 +45,9 @@ class Lazy_Circuit:
 
         for i in range(len(v)):
             r = self.gather(i)  # Get corresponding local index
-            for c in range(gate.data.shape[0]):
-                j = (i & ~self.scatter(gate.data.shape[0] - 1)) | self.scatter(c)
-                w[j] += gate.data[r, c] * v[i]  # Apply gate correctly
+            for c in range(gate.shape[0]):
+                j = (i & ~self.scatter(gate.shape[0] - 1)) | self.scatter(c)
+                w[j] += gate[r, c] * v[i]  # Apply gate correctly
 
         return w
 
@@ -57,8 +58,8 @@ if __name__ == "__main__":
     H_n = h_gate(n)
     Z_n = cz_gate(n, 0, 2)
     
-    # Create Lazy_Gate object
-    gate = Lazy_Circuit(list(range(n)))
+    # Create LazyCircuit object
+    gate = LazyCircuit(list(range(n)))
 
     # Queue the Hadamard operation twice
     gate.lazy_apply(H_n)

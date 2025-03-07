@@ -251,4 +251,4 @@ if __name__ == "__main__":
         # Tensor product
         D = A.tensor_product(B)
         print(D.display())
-        print(D.data.items())
+        print(D.data.items()[])
