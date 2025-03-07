@@ -25,7 +25,7 @@ def z_gate(n):
         Z_n = Z_n.TensorProduct(Z)
     return Z_n
 
-def controlled_z(n, control, target):
+def cz_gate(n, control, target):
     """Constructs a Controlled-Z gate for n qubits."""
     size = 2**n
     CZ = np.eye(size, dtype=complex)
@@ -34,9 +34,9 @@ def controlled_z(n, control, target):
             CZ[i, i] = -1
     return Tensor(CZ)
 
-def controlled_x_gate(n):
-    C = Tensor(np.array([1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]))
-    C_n = C
+def cx_gate(n):
+    CX = Tensor(np.array([1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]))
+    CX_n = C
     for _ in range(n-1):
-        C_n = C_n.TensorProduct(C)
-    return C_n 
+        CX_n = CX_n.TensorProduct(CX)
+    return CX_n 

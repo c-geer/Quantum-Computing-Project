@@ -1,11 +1,10 @@
 import numpy as np
 from gates import h_gate
-from gates import controlled_z
+from gates import cz_gate
 
-class Lazy_Gate:
-    def __init__(self, squarematrix, qbpos):
-        """Initialize with a gate matrix and qubit positions."""
-        self.sm = np.array(squarematrix)
+class Lazy_Circuit:
+    def __init__(self, qbpos):
+        """Initialize with qubit positions we want to act upon."""
         self.qbpos = qbpos
         self.lazy_ops = []  # Store gates instead of state vectors
 
@@ -56,10 +55,10 @@ class Lazy_Gate:
 if __name__ == "__main__":
     n = 3  # Number of qubits
     H_n = h_gate(n)
-    Z_n = controlled_z(n, 0, 2)
+    Z_n = cz_gate(n, 0, 2)
     
     # Create Lazy_Gate object
-    gate = Lazy_Gate(H_n, list(range(n)))
+    gate = Lazy_Circuit(list(range(n)))
 
     # Queue the Hadamard operation twice
     gate.lazy_apply(H_n)
