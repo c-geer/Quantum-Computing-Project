@@ -69,6 +69,7 @@ t4 = t1.TensorProduct(t2)
 t5 = Tensor([[1, 2]])
 t6 = Tensor([[5], [6]])
 
+#print("hello")
 '''
 Tensor product between 
 [1 2]   and [5 6]
