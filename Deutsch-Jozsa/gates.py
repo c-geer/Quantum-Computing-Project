@@ -1,5 +1,6 @@
 import numpy as np
 from tensor import Tensor
+from sparsematrix import SparseMatrix
 
 def x_gate(n):
     """X gate"""
@@ -28,11 +29,11 @@ def z_gate(n):
 def cz_gate(n, control, target):
     """Constructs a Controlled-Z gate for n qubits."""
     size = 2**n
-    CZ = np.eye(size, dtype=complex)
+    CZ = SparseMatrix.from_dense_matrix(np.eye(size, dtype=complex))
     for i in range(size):
         if ((i >> control) & 1) and ((i >> target) & 1):  # Both control and target are |1⟩
             CZ[i, i] = -1
-    return Tensor(CZ)
+    return CZ
 
 def cx_gate(n):
     CX = Tensor(np.array([1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]))
