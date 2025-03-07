@@ -3,11 +3,11 @@ from scipy.sparse import identity
 from tensor import Tensor
 
 def x_gate(n):
-    """Pauli-X gate."""
-    X = np.array([[0, 1], [1, 0]], dtype=complex)
+    
+    X = Tensor(np.array([[0, 1], [1, 0]], dtype=complex))
     X_n = X
     for _ in range(n-1):
-        X_n = np.kron(H_n, H)
+        X_n = X_n.TensorProduct(X)
     return X_n
 
 def h_gate(n):
