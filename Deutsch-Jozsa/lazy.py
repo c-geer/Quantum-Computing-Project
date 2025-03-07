@@ -1,5 +1,6 @@
 import numpy as np
 from gates import h_gate
+from gates import controlled_z
 
 class Lazy_Gate:
     def __init__(self, squarematrix, qbpos):
@@ -55,13 +56,14 @@ class Lazy_Gate:
 if __name__ == "__main__":
     n = 3  # Number of qubits
     H_n = h_gate(n)
+    Z_n = controlled_z(n, 0, 2)
     
     # Create Lazy_Gate object
     gate = Lazy_Gate(H_n, list(range(n)))
 
     # Queue the Hadamard operation twice
     gate.lazy_apply(H_n)
-    gate.lazy_apply(H_n) 
+    gate.lazy_apply(Z_n) 
     # Scream in joy as you realise the code works
 
     # Compute the final state after applying all queued gates
