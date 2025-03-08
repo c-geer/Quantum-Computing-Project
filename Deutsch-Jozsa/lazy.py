@@ -64,6 +64,6 @@ if __name__ == "__main__":
 
     # Compute the final state after applying all queued gates
     v = Tensor(np.zeros(2**n, dtype=np.complex128))  # Initialize state
-    v[0] = 1
+    v[0][0] = 1
     result = gate.compute(v[0])
     print(f"Computed Result:\n{result}")
