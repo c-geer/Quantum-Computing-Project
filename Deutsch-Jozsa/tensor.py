@@ -47,6 +47,17 @@ class Tensor(object):
         """
         return self.data[key]
     
+    def __setitem__(self, key, value):
+        """
+        Set the value of a specific element in the Tensor
+        
+        Parameters:
+        ------------
+            key: Tuple (row, col) specifying the element
+            value: Value to set at the element
+        """
+        self.data[key] = value
+    
     def __len__(self):
         """Compute the length of the tensor
         

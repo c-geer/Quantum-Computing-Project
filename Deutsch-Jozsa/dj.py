@@ -12,8 +12,20 @@ def oracle(args):
     return oracle_matrix
 
 def deutsch_jozsa(n, f):
-    size = 2**n # account for ancilla quibit
-    v = np.zeros(size, dtype=np.complex128)
+    # initialise first n qubits
+    size = 2**n 
+    v = [np.zeros(size), dtype=np.complex128)]
+    v[0][0] = 1
+    v = Tensor(v)
+
+    # initialise ancilla qubit
+    size_a = 2
+    a = [np.zeros(size_a), dtype=np.complex128)]
+    a[0][1] = 1
+    a = Tensor(a)
+
+    # combine into single register
+
 
     return False
     
