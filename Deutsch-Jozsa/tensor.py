@@ -45,8 +45,7 @@ class Tensor(object):
         ------------
             key: Tuple (row, col) specifying the element
         """
-        row, col = key
-        return self.data[row, col]
+        return self.data[key]
     
     def __len__(self):
         """Compute the length of the tensor
