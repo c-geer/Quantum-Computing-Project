@@ -2,6 +2,7 @@ import numpy as np
 from gates import h_gate
 from gates import cz_gate
 from sparsematrix import SparseMatrix
+from tensor import Tensor
 
 class LazyCircuit:
     def __init__(self, qbpos):
@@ -27,15 +28,10 @@ class LazyCircuit:
         """Queue a gate operation to be applied lazily."""
         self.lazy_ops.append(gate)
 
-    def compute(self):
-        """Apply all queued gates to the |0...0⟩ initial state."""
-        num_qubits = len(self.qbpos)
-        v = np.zeros(2**num_qubits, dtype=np.complex128)  # Initialize |0...0⟩ state
-        v[0] = 1
-
+    def compute(self, v):
+        """Apply all queued gates to the input state"""
         for gate in self.lazy_ops:
             v = self._apply(gate, v)  # Apply each gate in sequence
-
         return v
 
     def _apply(self, gate, v):
@@ -67,5 +63,8 @@ if __name__ == "__main__":
     # Scream in joy as you realise the code works
 
     # Compute the final state after applying all queued gates
-    result = gate.compute()
+    v = np.zeros(2**n, dtype=np.complex128)  # Initialize state
+    v[-1] = 1
+    v = Tensor(v)
+    result = gate.compute(v)
     print(f"Computed Result:\n{result}")

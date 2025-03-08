@@ -48,6 +48,14 @@ class Tensor(object):
         row, col = key
         return self.data[row, col]
     
+    def __len__(self):
+        """Compute the length of the tensor
+        
+        Returns:
+            Integer: Length of data array
+        """
+        return len(self.data)
+    
     def TensorProduct(self, other):
         """Compute the tensor product of two tensors
 
