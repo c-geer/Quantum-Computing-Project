@@ -40,7 +40,6 @@ def deutsch_jozsa(n, f):
 
     # combine into single register
     v = u.TensorProduct(a)
-    remove_ancilla(n, v)
 
     # perform first 
     circuit1 = LazyCircuit(list(range(n+1)))
