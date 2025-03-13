@@ -8,9 +8,7 @@ from gates import x_gate
 from gates import multi_cz_gate
 from gates import grovers_oracle
 
-if __name__ == "__main__":
-    n = 7  # Number of qubits
-    marked_index = 6
+def grovers_algo(n, marked_index):
     size = 2**n
     H_n = h_gate(n)
     X_n = x_gate(n)
@@ -36,7 +34,7 @@ if __name__ == "__main__":
     state[0][0] = 1
     result = gates.compute(state[0])
     return result
-"""
+
 if __name__ == "__main__":
     n = 4  # Number of qubits
     marked_index = 7
@@ -44,6 +42,6 @@ if __name__ == "__main__":
     probs = np.abs(result)**2
     index = random.choices(range(len(probs)), probs)[0]
     print(f"Computed Result:\n{result}")
-    print(f"Determined Index: {index}")""
-"""
+    print(f"Determined Index: {index}")
+
 
