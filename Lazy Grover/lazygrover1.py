@@ -16,6 +16,7 @@ if __name__ == "__main__":
     X_n = x_gate(n)
     MCZ = multi_cz_gate(n)
     oracle = grovers_oracle(n, marked_index)
+    size = 2**n
     iterations = int(np.pi / 4 * size**0.5)
     qblist = list(range(n))
 
@@ -33,12 +34,16 @@ if __name__ == "__main__":
 
     state = Tensor(np.zeros(2**n, dtype=np.complex128))  # Initialize state
     state[0][0] = 1
-    start = time.time()
     result = gates.compute(state[0])
-    end = time.time()
+    return result
+"""
+if __name__ == "__main__":
+    n = 4  # Number of qubits
+    marked_index = 7
+    result = grovers_algo(n, marked_index)
     probs = np.abs(result)**2
     index = random.choices(range(len(probs)), probs)[0]
     print(f"Computed Result:\n{result}")
-    print(f"Determined Index: {index}")
-    print(f"Time Taken: {end-start}")
+    print(f"Determined Index: {index}")""
+"""
 
