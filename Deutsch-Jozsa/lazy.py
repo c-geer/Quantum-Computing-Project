@@ -1,6 +1,8 @@
 import numpy as np
 from gates import h_gate
 from gates import cz_gate
+from gates import multi_cz_gate
+from gates import grovers_oracle
 from sparsematrix import SparseMatrix
 from tensor import Tensor
 
@@ -53,13 +55,16 @@ if __name__ == "__main__":
     n = 3  # Number of qubits
     H_n = h_gate(n)
     Z_n = cz_gate(n, 0, 2)
+    mcz = multi_cz_gate(n)
+    oracle = grovers_oracle(n, 3)
     
     # Create LazyCircuit object
     gate = LazyCircuit(list(range(n)))
 
     # Queue the Hadamard operation twice
     gate.lazy_apply(H_n)
-    gate.lazy_apply(Z_n) 
+    #gate.lazy_apply(Z_n) 
+    gate.lazy_apply(oracle)
     # Scream in joy as you realise the code works
 
     # Compute the final state after applying all queued gates

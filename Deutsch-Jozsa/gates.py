@@ -41,3 +41,17 @@ def cx_gate(n):
     for _ in range(n-1):
         CX_n = CX_n.TensorProduct(CX)
     return CX_n 
+
+def multi_cz_gate(n):
+    size = 2**n
+    MCZ = SparseMatrix.from_dense_matrix(np.eye(size, dtype=complex))
+    target_index = (1 << n) - 1
+    MCZ[target_index, target_index] *= -1
+    return MCZ
+
+def grovers_oracle(n, marked):
+    size = 2**n
+    oracle = SparseMatrix.from_dense_matrix(np.eye(size, dtype=complex))
+    oracle[marked,marked] *= -1
+    return oracle
+

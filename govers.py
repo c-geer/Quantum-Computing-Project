@@ -34,7 +34,6 @@ def multi_controlled_z(state, n):
     for i in range(size):
         if i == target_index:  # Only flip phase of the target
             new_state[i] = -new_state[i]
-    
     return new_state
 
 # Grover's oracle 
