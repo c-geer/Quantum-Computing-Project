@@ -1,5 +1,6 @@
 import numpy as np
 import time
+import matplotlib.pyplot as plt
 
 # Basic matrix operations
 def apply_gate(state, gate, qubit, n):
@@ -88,15 +89,28 @@ def grovers_algorithm(n, marked_index):
 
     return state
 
+"""
 # Run Grover's algorithm 
-n = 4
-marked_index = 5
-start = time.time()
-state = grovers_algorithm(n, marked_index)
-end = time.time()
-print(state)
-most_likely = np.argmax(np.abs(state))  
-print(f"Most likely state: {most_likely} (binary: {format(most_likely, f'0{n}b')})")
-print(f"Total Time: {end-start}")
+n_list = np.array([2,3,4,5,6,7,8,9,10,11,12,13,14])
+time_list = []
+for n in n_list:
+    marked_index = 2**n - n
+    print(f"Marked Index: {marked_index}")
+    start_time = time.time()
+    state = grovers_algorithm(n, marked_index)
+    end_time = time.time()
+    total_time = end_time-start_time
+    time_list.append(total_time)
+    print(state)
+    most_likely = np.argmax(np.abs(state))  
+    print(f"Most likely state: {most_likely} (binary: {format(most_likely, f'0{n}b')})")
+    print(f"Time taken: {total_time}")
 
+time_list = np.array(time_list)
+plt.plot(n_list, time_list)
+plt.xlabel("Number of Qubits")
+plt.ylabel("Time Taken in Seconds")
+plt.title("Time Taken for Bit-Wise Lazy Implementation")
+plt.show()
+"""
 # hi guys
