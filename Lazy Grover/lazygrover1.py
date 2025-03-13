@@ -9,26 +9,27 @@ from gates import multi_cz_gate
 from gates import grovers_oracle
 
 if __name__ == "__main__":
-    n = 12  # Number of qubits
-    marked_index = 7
+    n = 7  # Number of qubits
+    marked_index = 6
     size = 2**n
     H_n = h_gate(n)
     X_n = x_gate(n)
     MCZ = multi_cz_gate(n)
     oracle = grovers_oracle(n, marked_index)
     iterations = int(np.pi / 4 * size**0.5)
+    qblist = list(range(n))
 
-    gates = LazyCircuit(list(range(n)))
+    gates = LazyCircuit()
 
-    gates.lazy_apply(H_n)
+    gates.lazy_apply(H_n, qblist)
 
     for _ in range(iterations):
-        gates.lazy_apply(oracle)
-        gates.lazy_apply(H_n)
-        gates.lazy_apply(X_n)
-        gates.lazy_apply(MCZ)
-        gates.lazy_apply(X_n)
-        gates.lazy_apply(H_n)
+        gates.lazy_apply(oracle, qblist)
+        gates.lazy_apply(H_n, qblist)
+        gates.lazy_apply(X_n, qblist)
+        gates.lazy_apply(MCZ, qblist)
+        gates.lazy_apply(X_n, qblist)
+        gates.lazy_apply(H_n, qblist)
 
     state = Tensor(np.zeros(2**n, dtype=np.complex128))  # Initialize state
     state[0][0] = 1

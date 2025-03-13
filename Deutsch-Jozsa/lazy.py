@@ -8,44 +8,45 @@ from sparsematrix import SparseMatrix
 from tensor import Tensor
 
 class LazyCircuit:
-    def __init__(self, qbpos):
+    def __init__(self):
         """Initialize with qubit positions we want to act upon."""
-        self.qbpos = qbpos
         self.lazy_ops = []  # Store gates instead of state vectors
+        self.qblist = [] # Store positions of qubits we want to apply each gate to
 
-    def gather(self, i):
+    def gather(self, i, qbpos):
         """Maps a global index to a local index for the subspace."""
         j = 0
-        for k, pos in enumerate(self.qbpos):
+        for k, pos in enumerate(qbpos):
             j |= ((i >> pos) & 1) << k
         return j
 
-    def scatter(self, j):
+    def scatter(self, j, qbpos):
         """Maps a local index back to a global index."""
         i = 0
-        for k, pos in enumerate(self.qbpos):
+        for k, pos in enumerate(qbpos):
             i |= ((j >> k) & 1) << pos
         return i
 
-    def lazy_apply(self, gate):
+    def lazy_apply(self, gate, qbpos):
         """Queue a gate operation to be applied lazily."""
         self.lazy_ops.append(gate)
+        self.qblist.append(qbpos)
 
     def compute(self, v):
         """Apply all queued gates to the input state"""
-        for gate in self.lazy_ops:
-            v = self._apply(gate, v)  # Apply each gate in sequence
+        for i in range(len(self.lazy_ops)):
+            v = self._apply(self.lazy_ops[i], v, self.qblist[i])  # Apply each gate in sequence
         return v
 
-    def _apply(self, gate, v):
+    def _apply(self, gate, v, qbpos):
         """Applies a given gate to the input state vector v."""
         v = np.array(v)
         w = np.zeros_like(v, dtype=np.complex128)
 
         for i in range(len(v)):
-            r = self.gather(i)  # Get corresponding local index
+            r = self.gather(i, qbpos)  # Get corresponding local index
             for c in range(gate.shape[0]):
-                j = (i & ~self.scatter(gate.shape[0] - 1)) | self.scatter(c)
+                j = (i & ~self.scatter(gate.shape[0] - 1, qbpos)) | self.scatter(c, qbpos)
                 w[j] += gate[r, c] * v[i]  # Apply gate correctly
 
         return w
@@ -61,15 +62,17 @@ if __name__ == "__main__":
     X_n = x_gate(n)
     
     # Create LazyCircuit object
-    qbits_to_act_upon = list(range(1))
-    gate = LazyCircuit(qbits_to_act_upon)
+    circuit = LazyCircuit()
 
     # Queue your desired gate operations
-    gate.lazy_apply(X_n)
+    qblist = list(range(n-1, n))
+    circuit.lazy_apply(X_n, qblist)
+    #qblist = list(range(n))
+    #gate.lazy_apply(H_n, qblist)
 
     # Compute the final state after applying all queued gates
     v = Tensor(np.zeros(2**n, dtype=np.complex128))  # Initialize state
-    v[0][0] = 1
+    v[0][-1] = 1
     print(f"Initial state:\n{v}")
-    result = gate.compute(v[0])
+    result = circuit.compute(v[0])
     print(f"Computed Result:\n{result}")
