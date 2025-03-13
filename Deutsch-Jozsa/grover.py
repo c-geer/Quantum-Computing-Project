@@ -9,7 +9,7 @@ from gates import multi_cz_gate
 from gates import grovers_oracle
 
 if __name__ == "__main__":
-    n = 4  # Number of qubits
+    n = 8  # Number of qubits
     marked_index = 7
     size = 2**n
     H_n = h_gate(n)
