@@ -7,8 +7,17 @@ def measure_n(n, v):
     # perform measurement
     return measurement
 
-def oracle(args):
+def oracle(n,f):
     # this one's all you, Oskar
+
+    if f = True:
+        #the constant case 
+        oracle_matrix = x_gate(n)       
+
+        else:
+            #the balanced case 
+
+            
     return oracle_matrix
 
 def remove_ancilla(n, v):
@@ -62,6 +71,7 @@ def deutsch_jozsa(n, f):
 if __name__ == "__main__":
     n = 3
     func = ("constant", "balanced")
+    is_constant = True 
 
     is_constant = deutsch_jozsa(n, func[0])
     
