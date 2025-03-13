@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 # Basic matrix operations
 def apply_gate(state, gate, qubit, n):
@@ -90,9 +91,12 @@ def grovers_algorithm(n, marked_index):
 # Run Grover's algorithm 
 n = 4
 marked_index = 5
+start = time.time()
 state = grovers_algorithm(n, marked_index)
+end = time.time()
 print(state)
 most_likely = np.argmax(np.abs(state))  
 print(f"Most likely state: {most_likely} (binary: {format(most_likely, f'0{n}b')})")
+print(f"Total Time: {end-start}")
 
 # hi guys
