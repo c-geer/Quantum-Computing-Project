@@ -55,3 +55,10 @@ def grovers_oracle(n, marked):
     oracle[marked,marked] *= -1
     return oracle
 
+def CNOT_gate(n):
+    #function that returns a C not matrix in tensot product form 
+    C_n = Tensor(np.array([[1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]], dtype=np.complex128))
+    return C_n
+    
+    
+
