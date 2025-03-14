@@ -16,12 +16,15 @@ def oracle(n,f):
         
         qblist = list(range(n-1,n))
         
-        return (oracle_matrix, qblist)
+        return oracle_matrix, qblist
         
-        else:
-            #the balanced case 
-            
-
+    else:
+        #the balanced case 
+        oracle_matrix = CNOT_gate(n)
+        
+        qblist= [0,n]
+        
+        return oracle_matrix, qblist
             
     return oracle_matrix
 
