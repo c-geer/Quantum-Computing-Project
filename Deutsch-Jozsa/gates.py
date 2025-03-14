@@ -36,7 +36,7 @@ def cz_gate(n, control, target):
     return CZ
 
 def cx_gate(n):
-    CX = Tensor([1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0])
+    CX = Tensor([[1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]])
     CX_n = CX
     for _ in range(n-1):
         CX_n = CX_n.TensorProduct(CX)
