@@ -10,9 +10,10 @@ def measure_n(n, v):
 def oracle(n,f):
     # this one's all you, Oskar
 
-    if f = True:
+    if f = "constant":
         #the constant case 
-        oracle_matrix = x_gate(n)      
+        #the x gate has to be the size of 1 Q bit not n big 
+        oracle_matrix = x_gate(1)      
         
         qblist = list(range(n-1,n))
         
@@ -70,8 +71,15 @@ def deutsch_jozsa(n, f):
     U, qblist = oracle(args)
     circuit1.lazy_apply(U, qblist)
 
-    
+    #step 3 
+    H_n = h_gate(n)
+    circuit1.lazy_apply(H_n, list(range(n)))
 
+    #step 4 compute final 
+    final_state = 
+
+    #step 5 measure 
+    
     return False
     
     
