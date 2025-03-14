@@ -21,27 +21,25 @@ def measure_n(n, v):
 
     probs = np.abs(measurement_results)**2
     measurement = random.choices(range(len(measurement_results)), measurement_results)[0]
-    print(measurement)
 
     return measurement
 
-def oracle(n,f):
-    # this one's all you, Oskar
+def oracle(n, f):
 
     if f == "constant":
         #the constant case 
         #the x gate has to be the size of 1 Q bit not n big 
         oracle_matrix = x_gate(1)      
         
-        qblist = list(range(n-1,n))
+        qblist = list(range(1))
         
         return oracle_matrix, qblist
         
     else:
         #the balanced case 
-        oracle_matrix = cx_gate(n)
+        oracle_matrix = cx_gate(n+1)
         
-        qblist= list(range(n))
+        qblist= list(range(n+1))
         
         return oracle_matrix, qblist
             
@@ -75,7 +73,7 @@ def deutsch_jozsa(n, f):
 
     #step 3 
     H_n = h_gate(n)
-    circuit1.lazy_apply(H_n, list(range(1, n)))
+    circuit1.lazy_apply(H_n, list(range(1,n+1)))
 
     #step 4 compute the state of the register 
     state = circuit1.compute(v[0])
@@ -91,7 +89,7 @@ def deutsch_jozsa(n, f):
     
 
 if __name__ == "__main__":
-    n = 3
+    n = 4
     func = ("constant", "balanced")
     is_constant = True 
 

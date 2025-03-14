@@ -54,7 +54,7 @@ class LazyCircuit:
 
 # Example usage
 if __name__ == "__main__":
-    n = 3  # Number of qubits
+    n = 2  # Number of qubits
     H_n = h_gate(n)
     Z_n = cz_gate(n, 0, 2)
     mcz = multi_cz_gate(n)
@@ -65,14 +65,14 @@ if __name__ == "__main__":
     circuit = LazyCircuit()
 
     # Queue your desired gate operations
-    qblist = list(range(n-1, n))
+    qblist = list(range(1, n))
     circuit.lazy_apply(X_n, qblist)
     #qblist = list(range(n))
     #gate.lazy_apply(H_n, qblist)
 
     # Compute the final state after applying all queued gates
     v = Tensor(np.zeros(2**n, dtype=np.complex128))  # Initialize state
-    v[0][-1] = 1
+    v[0][1] = 1
     print(f"Initial state:\n{v}")
     result = circuit.compute(v[0])
     print(f"Computed Result:\n{result}")
