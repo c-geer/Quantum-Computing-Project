@@ -12,10 +12,15 @@ def oracle(n,f):
 
     if f = True:
         #the constant case 
-        oracle_matrix = x_gate(n)       
-
+        oracle_matrix = x_gate(n)      
+        
+        qblist = list(range(n-1,n))
+        
+        return (oracle_matrix, qblist)
+        
         else:
             #the balanced case 
+            
 
             
     return oracle_matrix
@@ -58,8 +63,9 @@ def deutsch_jozsa(n, f):
     circuit1.lazy_apply(H)
 
     # step 2
-    U = oracle(args)
-    circuit1.lazy_apply(U)
+    args = n, f
+    U, qblist = oracle(args)
+    circuit1.lazy_apply(U, qblist)
 
     
 
