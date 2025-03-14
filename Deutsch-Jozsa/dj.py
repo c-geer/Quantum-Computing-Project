@@ -75,12 +75,24 @@ def deutsch_jozsa(n, f):
     H_n = h_gate(n)
     circuit1.lazy_apply(H_n, list(range(n)))
 
-    #step 4 compute final 
-    final_state = 
-
-    #step 5 measure 
+    #step 4 compute the state of the register 
+    state = circuit1.compure(v[0])
     
-    return False
+
+    #step 5 remove the ancilla 
+    final_state = remove_ancilla(n,[state])
+    
+    
+    #step 6 measure 
+    #take the absolure value of the amplitudes 
+    measured_amplitude = np.abs(final_state[0][0])
+
+    if np.isclose(1,measured_amplitude , rtol = 0.1):
+        return True 
+        
+    else:
+    
+        return False
     
     
 
