@@ -4,9 +4,25 @@ from gates import x_gate
 from gates import cx_gate
 from lazy import LazyCircuit
 from tensor import Tensor
+import random
 
 def measure_n(n, v):
-    # perform measurement
+    # Calculate probabilities for each possible outcome
+    probabilities = np.abs(v)**2
+    
+    # Initialize array to hold measurement results for the first n qubits
+    measurement_results = np.zeros(2**n, dtype=float)
+    
+    for i in range(2**(n + 1)):
+        # Extract the first n bits of the index
+        index = i >> 1
+        # Add the probability to the corresponding measurement result
+        measurement_results[index] += probabilities[i]
+
+    probs = np.abs(measurement_results)**2
+    measurement = random.choices(range(len(measurement_results)), measurement_results)[0]
+    print(measurement)
+
     return measurement
 
 def oracle(n,f):
@@ -29,22 +45,7 @@ def oracle(n,f):
         
         return oracle_matrix, qblist
             
-    return oracle_matrix
 
-def remove_ancilla(n, v):
-    # Reshape state vector to separate the ancilla qubit
-    reshaped_state = v.reshape([2] * (n+1))
-
-    # Sum over the ancilla dimension to trace it out
-    reduced_state = np.sum(reshaped_state, axis=n)
-
-    # Flatten the reduced state to get the new state vector
-    n_v = reduced_state.flatten()
-
-    # Normalize the new state vector
-    n_v /= np.linalg.norm(n_v)
-
-    return Tensor(n_v)
 
 def deutsch_jozsa(n, f):
 
@@ -78,21 +79,13 @@ def deutsch_jozsa(n, f):
 
     #step 4 compute the state of the register 
     state = circuit1.compute(v[0])
-    print(state)
-
-    #step 5 remove the ancilla 
-    final_state = remove_ancilla(n, state)
     
-    
-    #step 6 measure 
-    #take the absolure value of the amplitudes 
-    measured_amplitude = np.abs(final_state[0][0])
+    #step 5 measure first n qubits
+    measurement = measure_n(n, state)
 
-    if np.isclose(1,measured_amplitude , rtol = 0.1):
+    if measurement == 0:
         return True 
-        
     else:
-    
         return False
     
     
@@ -102,8 +95,8 @@ if __name__ == "__main__":
     func = ("constant", "balanced")
     is_constant = True 
 
-    is_constant = deutsch_jozsa(n, func[1])
-    
+    is_constant = deutsch_jozsa(n, func[0])
+
     if is_constant:
         print("The function is constant")
     else:
