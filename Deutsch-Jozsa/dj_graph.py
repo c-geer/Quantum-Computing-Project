@@ -1,27 +1,37 @@
-from dj import deutsch_jozsa
-from dj import func
-import time
 from matplotlib import pyplot as plt
+import numpy as np
 
-if __name__ == "__main__":
+# Open the file and read its contents
+with open("Deutsch-Jozsa/time_results.txt", "r") as file:
+    lines = file.readlines()
 
-    # Open a file to store the results
-    with open("time_results.txt", "w") as file:
-        # Loop through a variety of n values
-        for n in range(1, 10):  # takes too long for n>10
-            type = ("constant", "balanced")
-            for t in type:
-                f = func(n, t)
+# Initialize empty lists for times
+times = []
 
-                # Measure execution time
-                t1 = time.time()
-                is_constant = deutsch_jozsa(n, f)
-                t2 = time.time()
+# Process each line
+for line in lines:
+    line = line.strip()  # Remove leading/trailing whitespace
+    if line:  # Ignore empty lines
+        try:
+            # Extract time
+            time_part = line.split(",")[-1]
+            time = float(time_part.split(":")[1].split()[0].strip())
+            times.append(time)
+        except (IndexError, ValueError):
+            print(f"Skipping malformed line: {line}")
 
-                # Determine time taken and write results to file
-                time_elapsed = t2 - t1
-                file.write(f"n: {n}, type: {t}, time: {time_elapsed:.6f} seconds\n")
+n = np.arange(1, 11, 1) # list of number of qubits values
+tc = times[0::2]
+tb = times[1::2]
+
+plt.plot(n, tc, color="green", label="f(x) = constant")
+plt.plot(n, tb, color="blueviolet", label="f(x) = balanced")
+plt.title("Deutsch-Jozsa: Time elapsed vs. Number of qubits")
+plt.xlabel("Number of qubits")
+plt.ylabel("Time taken to determine function type")
+plt.legend()
+plt.show()
 
 
 
-            
+

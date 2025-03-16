@@ -85,9 +85,9 @@ def deutsch_jozsa(n, f):
     
 
 if __name__ == "__main__":
-    n = 8
+    n = 10
     type = ("constant", "balanced")
-    f = func(n, type[0])
+    f = func(n, type[1])
 
     t1 = time.time()
     is_constant = deutsch_jozsa(n, f)
