@@ -1,7 +1,6 @@
 import numpy as np
 from gates import h_gate
-from gates import x_gate
-from gates import cx_gate
+from gates import dj_oracle
 from lazy import LazyCircuit
 from tensor import Tensor
 import random
@@ -23,26 +22,6 @@ def measure_n(n, v):
     measurement = random.choices(range(len(measurement_results)), measurement_results)[0]
 
     return measurement
-
-def oracle(n, f):
-
-    if f == "constant":
-        #the constant case 
-        #the x gate has to be the size of 1 Q bit not n big 
-        oracle_matrix = x_gate(1)      
-        
-        qblist = list(range(1))
-        
-        return oracle_matrix, qblist
-        
-    else:
-        #the balanced case 
-        oracle_matrix = cx_gate(n+1)
-        
-        qblist= list(range(n+1))
-        
-        return oracle_matrix, qblist
-            
 
 
 def deutsch_jozsa(n, f):
@@ -68,7 +47,8 @@ def deutsch_jozsa(n, f):
     circuit1.lazy_apply(H, list(range(n+1)))
 
     # step 2
-    U, qblist = oracle(n, f)
+    U = dj_oracle(n, f)
+    qblist = list(range(n+1))
     circuit1.lazy_apply(U, qblist)
 
     #step 3 
@@ -89,11 +69,11 @@ def deutsch_jozsa(n, f):
     
 
 if __name__ == "__main__":
-    n = 4
-    func = ("constant", "balanced")
-    is_constant = True 
+    n = 3
+    func = [0, 0, 0, 0, 0, 0, 0, 0]
 
-    is_constant = deutsch_jozsa(n, func[0])
+    is_constant = True 
+    is_constant = deutsch_jozsa(n, func)
 
     if is_constant:
         print("The function is constant")
