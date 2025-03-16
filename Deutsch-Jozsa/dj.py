@@ -36,8 +36,7 @@ def func(n, type="constant"):
         outputs = [1] * (size//2) + [0] * (size//2)
         random.shuffle(outputs)
 
-    return np.array(outputs)
-
+    return outputs
 
 
 def deutsch_jozsa(n, f):
@@ -87,10 +86,10 @@ def deutsch_jozsa(n, f):
 if __name__ == "__main__":
     n = 3
     type = ("constant", "balanced")
-    func = (n, type[0])
+    f = func(n, type[1])
 
     is_constant = True 
-    is_constant = deutsch_jozsa(n, func)
+    is_constant = deutsch_jozsa(n, f)
 
     if is_constant:
         print("The function is constant")
