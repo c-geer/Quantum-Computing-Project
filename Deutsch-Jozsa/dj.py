@@ -23,6 +23,22 @@ def measure_n(n, v):
 
     return measurement
 
+def func(n, type="constant"):
+    """generate our constant/balanced function"""
+    size = 2**n
+    
+    if type == "constant":
+        outputs = []
+        a = random.choice([0, 1])
+        for i in range(size):
+            outputs.append(a)
+    else:
+        outputs = [1] * (size//2) + [0] * (size//2)
+        random.shuffle(outputs)
+
+    return np.array(outputs)
+
+
 
 def deutsch_jozsa(n, f):
 
@@ -70,7 +86,8 @@ def deutsch_jozsa(n, f):
 
 if __name__ == "__main__":
     n = 3
-    func = [0, 0, 0, 0, 0, 0, 0, 0]
+    type = ("constant", "balanced")
+    func = (n, type[0])
 
     is_constant = True 
     is_constant = deutsch_jozsa(n, func)
