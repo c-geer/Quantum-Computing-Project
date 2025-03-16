@@ -54,7 +54,7 @@ class LazyCircuit:
 
 # Example usage
 if __name__ == "__main__":
-    n = 2  # Number of qubits
+    n = 3  # Number of qubits
     H_n = h_gate(n)
     Z_n = cz_gate(n, 0, 2)
     mcz = multi_cz_gate(n)
@@ -65,8 +65,8 @@ if __name__ == "__main__":
     circuit = LazyCircuit()
 
     # Queue your desired gate operations
-    qblist = list(range(1, n))
-    circuit.lazy_apply(X_n, qblist)
+    qblist = list(range(n))
+    circuit.lazy_apply(H_n, qblist)
     #qblist = list(range(n))
     #gate.lazy_apply(H_n, qblist)
 

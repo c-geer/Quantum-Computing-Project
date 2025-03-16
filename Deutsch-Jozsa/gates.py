@@ -60,5 +60,20 @@ def CNOT_gate(n):
     C_n = Tensor(np.array([[1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]], dtype=np.complex128))
     return C_n
     
+def dj_oracle(n, f_map):
+    """Generate an oracle matrix based on the given function mapping."""
+    
+    num_qubits = n + 1
+    U = SparseMatrix.from_dense_matrix(np.zeros((2**num_qubits, 2**num_qubits), dtype=complex)) # Start with a matrix of zeroes.
+    
+    # Quantum state looks like IN-IN-...-IN-ANCILLA
+    for input_state in range(2**num_qubits): # For each possible input
+        input_string = input_state >> 1 # remove ANCILLA
+        output_qubit = (input_state & 1) ^ (f_map[input_string]) # remove IN, XOR with f(IN)
+        output_state = (input_string << 1) + output_qubit # the full state, with new OUT
+        U[input_state, output_state] = 1 # set that part of U to 1
+
+    return U
+
     
 
