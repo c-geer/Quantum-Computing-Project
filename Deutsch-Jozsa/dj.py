@@ -4,6 +4,7 @@ from gates import dj_oracle
 from lazy import LazyCircuit
 from tensor import Tensor
 import random
+import time
 
 def measure_n(n, v):
     # Calculate probabilities for each possible outcome
@@ -84,15 +85,18 @@ def deutsch_jozsa(n, f):
     
 
 if __name__ == "__main__":
-    n = 3
+    n = 1
     type = ("constant", "balanced")
-    f = func(n, type[1])
+    f = func(n, type[0])
 
-    is_constant = True 
+    t1 = time.time()
     is_constant = deutsch_jozsa(n, f)
+    t2 = time.time()
 
     if is_constant:
-        print("The function is constant")
+        print("The function is constant\n")
     else:
-        print("The function is balanced")
+        print("The function is balanced\n")
+
+    print(f"Time elapsed: {t2 - t1} s\n")
     
