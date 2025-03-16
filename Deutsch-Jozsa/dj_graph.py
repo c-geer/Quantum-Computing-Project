@@ -28,7 +28,7 @@ plt.plot(n, tc, color="green", label="f(x) = constant")
 plt.plot(n, tb, color="blueviolet", label="f(x) = balanced")
 plt.title("Deutsch-Jozsa: Time elapsed vs. Number of qubits")
 plt.xlabel("Number of qubits")
-plt.ylabel("Time taken to determine function type")
+plt.ylabel("Time taken to determine function type [s]")
 plt.legend()
 plt.show()
 
