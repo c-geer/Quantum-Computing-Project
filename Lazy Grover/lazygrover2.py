@@ -1,5 +1,6 @@
 import numpy as np
 import time
+import random
 import matplotlib.pyplot as plt
 
 def apply_hadamard_lazy(state, qubit, n):
@@ -67,6 +68,13 @@ def grovers_algorithm_lazy(n, marked_index):
         state = diffusion_operator_lazy(state, n)
 
     return state
+
+n = 3
+marked_index = 3
+result = grovers_algorithm_lazy(n, 3)
+probs = np.abs(result)**2
+index = random.choices(range(len(probs)), probs)[0]
+print(index)
 
 """
 n_list = np.array([2,3,4,5,6,7,8,9,10,11,12,13,14])
