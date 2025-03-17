@@ -41,6 +41,7 @@ def func(n, type="constant"):
 
 
 def deutsch_jozsa(n, f):
+    """THIS IS THE FINAL DEUTSCH-JOZSA IMPLEMENTATION"""
 
     # initialise first n qubits
     size_u = 2**n 
