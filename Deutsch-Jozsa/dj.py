@@ -1,39 +1,44 @@
 import numpy as np
 from gates import h_gate
+from gates import dj_oracle
 from lazy import LazyCircuit
 from tensor import Tensor
+import random
+import time
 
 def measure_n(n, v):
-    # perform measurement
+    # Calculate probabilities for each possible outcome
+    probabilities = np.abs(v)**2
+    
+    # Initialize array to hold measurement results for the first n qubits
+    measurement_results = np.zeros(2**n, dtype=float)
+    
+    for i in range(2**(n + 1)):
+        # Extract the first n bits of the index
+        index = i >> 1
+        # Add the probability to the corresponding measurement result
+        measurement_results[index] += probabilities[i]
+
+    probs = np.abs(measurement_results)**2
+    measurement = random.choices(range(len(measurement_results)), measurement_results)[0]
+
     return measurement
 
-def oracle(n,f):
-    # this one's all you, Oskar
+def func(n, type="constant"):
+    """generate our constant/balanced function"""
+    size = 2**n
+    
+    if type == "constant":
+        outputs = []
+        a = random.choice([0, 1])
+        for i in range(size):
+            outputs.append(a)
+    else:
+        outputs = [1] * (size//2) + [0] * (size//2)
+        random.shuffle(outputs)
 
-    if f = True:
-        #the constant case 
-        oracle_matrix = x_gate(n)       
+    return outputs
 
-        else:
-            #the balanced case 
-
-            
-    return oracle_matrix
-
-def remove_ancilla(n, v):
-    # Reshape state vector to separate the ancilla qubit
-    reshaped_state = v[0].reshape([2] * (n+1))
-
-    # Sum over the ancilla dimension to trace it out
-    reduced_state = np.sum(reshaped_state, axis=n)
-
-    # Flatten the reduced state to get the new state vector
-    n_v = reduced_state.flatten()
-
-    # Normalize the new state vector
-    n_v /= np.linalg.norm(n_v)
-
-    return Tensor(n_v)
 
 def deutsch_jozsa(n, f):
 
@@ -51,31 +56,47 @@ def deutsch_jozsa(n, f):
     v = u.TensorProduct(a)
 
     # perform first 
-    circuit1 = LazyCircuit(list(range(n+1)))
+    circuit1 = LazyCircuit()
 
     # step 1
     H = h_gate(n+1)
-    circuit1.lazy_apply(H)
+    circuit1.lazy_apply(H, list(range(n+1)))
 
     # step 2
-    U = oracle(args)
-    circuit1.lazy_apply(U)
+    U = dj_oracle(n, f)
+    qblist = list(range(n+1))
+    circuit1.lazy_apply(U, qblist)
 
+    #step 3 
+    H_n = h_gate(n)
+    circuit1.lazy_apply(H_n, list(range(1,n+1)))
+
+    #step 4 compute the state of the register 
+    state = circuit1.compute(v[0])
     
+    #step 5 measure first n qubits
+    measurement = measure_n(n, state)
 
-    return False
+    if measurement == 0:
+        return True 
+    else:
+        return False
     
     
 
 if __name__ == "__main__":
-    n = 3
-    func = ("constant", "balanced")
-    is_constant = True 
+    n = 10
+    type = ("constant", "balanced")
+    f = func(n, type[1])
 
-    is_constant = deutsch_jozsa(n, func[0])
-    
+    t1 = time.time()
+    is_constant = deutsch_jozsa(n, f)
+    t2 = time.time()
+
     if is_constant:
-        print("The function is constant")
+        print("The function is constant\n")
     else:
-        print("The function is balanced")
+        print("The function is balanced\n")
+
+    print(f"Time elapsed: {t2 - t1} s\n")
     

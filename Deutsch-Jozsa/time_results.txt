@@ -1,0 +1,20 @@
+n: 1, type: constant, time: 0.000000 seconds
+n: 1, type: balanced, time: 0.000000 seconds
+n: 2, type: constant, time: 0.000000 seconds
+n: 2, type: balanced, time: 0.000000 seconds
+n: 3, type: constant, time: 0.000000 seconds
+n: 3, type: balanced, time: 0.016726 seconds
+n: 4, type: constant, time: 0.022414 seconds
+n: 4, type: balanced, time: 0.016027 seconds
+n: 5, type: constant, time: 0.055089 seconds
+n: 5, type: balanced, time: 0.032920 seconds
+n: 6, type: constant, time: 0.173047 seconds
+n: 6, type: balanced, time: 0.152283 seconds
+n: 7, type: constant, time: 0.621102 seconds
+n: 7, type: balanced, time: 0.611954 seconds
+n: 8, type: constant, time: 3.281394 seconds
+n: 8, type: balanced, time: 3.276037 seconds
+n: 9, type: constant, time: 13.744434 seconds
+n: 9, type: balanced, time: 12.486197 seconds
+n: 10, type: constant, time: 55.489542 seconds
+n:10, type: balanced, time: 56.745846 seconds
