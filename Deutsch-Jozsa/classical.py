@@ -25,7 +25,7 @@ if __name__ == "__main__":
     # Open a file to store the results
     with open("Deutsch-Jozsa/classical_results.txt", "w") as file:
         # Loop through a variety of n values
-        for n in range(31, 33):  # choose arbitrary limit
+        for n in range(1, 31):  # choose arbitrary limit
             type = ("constant", "balanced")
             for t in type:
                 f = func(n, t)
