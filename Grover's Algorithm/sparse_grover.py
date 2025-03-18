@@ -84,7 +84,7 @@ def grovers_algorithm_sparse(n, marked_index):
 
     return state
 
-
+"""
 n = 4
 marked_index = 5
 start_time = time.time()
@@ -95,5 +95,5 @@ probs = np.abs(result)**2
 most_likely = random.choices(range(len(probs)), probs)[0]
 print(f"Most likely state: {most_likely} (binary: {format(most_likely, f'0{n}b')})")
 print(f"Time taken for {n} qubits: {end_time-start_time}")
-
+"""
 

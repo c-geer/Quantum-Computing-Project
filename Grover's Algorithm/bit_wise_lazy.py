@@ -69,12 +69,6 @@ def grovers_algorithm_lazy(n, marked_index):
 
     return state
 
-n = 3
-marked_index = 3
-result = grovers_algorithm_lazy(n, 3)
-probs = np.abs(result)**2
-index = random.choices(range(len(probs)), probs)[0]
-print(index)
 
 """
 n_list = np.array([2,3,4,5,6,7,8,9,10,11,12,13,14])
@@ -88,7 +82,8 @@ for n in n_list:
     total_time = end_time-start_time
     time_list.append(total_time)
     print(state)
-    most_likely = np.argmax(np.abs(state))  
+    probs = np.abs(state)**2
+    most_likely = random.choices(range(len(probs)), probs)[0]
     print(f"Most likely state: {most_likely} (binary: {format(most_likely, f'0{n}b')})")
     print(f"Time taken: {total_time}")
 

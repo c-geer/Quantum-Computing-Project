@@ -1,5 +1,6 @@
 import numpy as np
 import time
+import random
 import matplotlib.pyplot as plt
 
 # Basic matrix operations
@@ -102,7 +103,8 @@ for n in n_list:
     total_time = end_time-start_time
     time_list.append(total_time)
     print(state)
-    most_likely = np.argmax(np.abs(state))  
+    probs = np.abs(state)**2
+    most_likely  = random.choices(range(len(probs)), probs)[0]
     print(f"Most likely state: {most_likely} (binary: {format(most_likely, f'0{n}b')})")
     print(f"Time taken: {total_time}")
 
